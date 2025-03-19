@@ -121,6 +121,35 @@ const ThemeTypeLayer = ({
       {outline ? (
         <Layer
           filter={["==", ["geometry-type"], "Polygon"]}
+          id={`${theme}_${type}_fill`}
+          type="fill"
+          source={theme}
+          source-layer={type}
+          paint={{
+            "fill-color": [
+                  "case",
+                    ["<", ["get", "depth"], 10], "yellow",
+                    ["<=", ["get", "depth"], 10], "PaleGreen",
+                    ["<=", ["get", "depth"], 50], "MediumSpringGreen",
+                    ["<=", ["get", "depth"], 100], "black",
+                    ["<=", ["get", "depth"], 500], "LightGreen",
+                    ["<=", ["get", "depth"], 1000], "RoyalBlue",
+                    ["<=", ["get", "depth"], 1500], "Blue",
+                    ["<=", ["get", "depth"], 2000], "MediumBlue",
+                    ["<=", ["get", "depth"], 2500], "DarkBlue",
+                    ["<=", ["get", "depth"], 3000], "Navy",
+                    [">", ["get", "depth"], 3000], "MidnightBlue",
+                    "red" 
+              ]            
+          }}
+          layout={{ "symbol-sort-key": ["get", "sort_key"] }}
+          {...(minzoom ? { minzoom } : {})}
+        />
+      ) : null}
+
+      {/* {outline ? (
+        <Layer
+          filter={["==", ["geometry-type"], "Polygon"]}
           id={`${theme}_${type}_outline`}
           type="line"
           source={theme}
@@ -140,7 +169,7 @@ const ThemeTypeLayer = ({
           layout={{ visibility: visible ? "visible" : "none" }}
           {...(minzoom ? { minzoom } : {})}
         />
-      ) : null}
+      ) : null} */}
       {outline ? (
         <Layer
           filter={["==", ["geometry-type"], "Polygon"]}
