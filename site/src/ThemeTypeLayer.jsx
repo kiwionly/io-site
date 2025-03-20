@@ -118,6 +118,8 @@ const ThemeTypeLayer = ({
         />
       ) : null}
 
+     
+
       {outline ? (
         <Layer
           filter={["==", ["geometry-type"], "Polygon"]}
@@ -127,23 +129,50 @@ const ThemeTypeLayer = ({
           source-layer={type}
           paint={{
             "fill-color": [
-                  "case",
-                    ["<", ["get", "depth"], 10], "yellow",
-                    ["<=", ["get", "depth"], 10], "PaleGreen",
-                    ["<=", ["get", "depth"], 50], "MediumSpringGreen",
-                    ["<=", ["get", "depth"], 100], "black",
-                    ["<=", ["get", "depth"], 500], "LightGreen",
-                    ["<=", ["get", "depth"], 1000], "RoyalBlue",
-                    ["<=", ["get", "depth"], 1500], "Blue",
-                    ["<=", ["get", "depth"], 2000], "MediumBlue",
-                    ["<=", ["get", "depth"], 2500], "DarkBlue",
-                    ["<=", ["get", "depth"], 3000], "Navy",
-                    [">", ["get", "depth"], 3000], "MidnightBlue",
-                    "red" 
-              ]            
+              "case",
+              ["!", ["has", "depth"]], "PowderBlue",
+              ["==", ["get", "depth"], 0], "LightGreen",
+              ["<=", ["get", "depth"], 10], "LimeGreen",
+              ["<=", ["get", "depth"], 50], "ForestGreen",
+              ["<=", ["get", "depth"], 100], "DarkGreen",
+              ["<=", ["get", "depth"], 500], "DarkSeaGreen",
+              ["<=", ["get", "depth"], 1000], "RoyalBlue",
+              ["<=", ["get", "depth"], 1500], "Blue",
+              ["<=", ["get", "depth"], 2000], "MediumBlue",
+              ["<=", ["get", "depth"], 2500], "DarkBlue",
+              ["<=", ["get", "depth"], 3000], "Navy",
+              [">", ["get", "depth"], 3000], "MidnightBlue",
+              "red"
+            ]
           }}
-          layout={{ "symbol-sort-key": ["get", "sort_key"] }}
-          {...(minzoom ? { minzoom } : {})}
+          minzoom={0}
+        />
+      ) : null}
+
+      {outline ? (
+        <Layer
+          filter={["==", ["geometry-type"], "Polygon"]}
+          id={`${theme}_${type}_symbol`}
+          type="symbol"
+          source={theme}
+          source-layer={type}
+          paint={{
+            "text-color": [
+              "case",
+              ["<", ["get", "depth"], 500], "black",
+              [">=", ["get", "depth"], 500], "white",
+              "red"
+            ]
+          }}
+          layout={{
+            "symbol-placement": "line",
+            "text-field": [
+              "get",
+              "depth"
+            ],
+            "text-size": 12
+          }}
+          minzoom={0}
         />
       ) : null}
 
